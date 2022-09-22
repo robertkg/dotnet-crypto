@@ -1,5 +1,4 @@
 using System.Security.Cryptography;
-using System.Text;
 using Ionic.Zip;
 
 var rsa = RSA.Create();
@@ -7,14 +6,11 @@ var aes = Aes.Create();
 
 // Retrieve RSA public key
 var file = File.ReadAllText("keys/id_rsa.pub.pem");
-rsa.ImportFromPem(file); // PEM PKCS#1 format
+rsa.ImportFromPem(file);
 Console.WriteLine("RSA public key [keys/id_rsa.pub.pem]:");
 Console.WriteLine(file);
 
-
 // Generate random key for zip encryption
-//var randomKeyPlaintext = "password1234";
-//var randomKey = Encoding.UTF8.GetBytes(randomKeyPlaintext);
 aes.GenerateKey();
 var randomKey = aes.Key;
 var randomKeyBase64 = Convert.ToBase64String(randomKey);
@@ -41,11 +37,10 @@ File.WriteAllBytes(randomKeyFilePath, randomKeyEncrypted);
 Console.WriteLine("\nTo decrypt using openssl, run the script:");
 Console.WriteLine("\t./openssl_decrypt.ps1");
 
-// Sample code to decrypt RSA
+// Sample code to decrypt randomKey
 // Console.WriteLine("\n\nDecrypting using RSA private key [keys/id_rsa]");
 // var privateKeyFile = File.ReadAllText("keys/id_rsa");
 // rsa.ImportFromEncryptedPem(privateKeyFile, Encoding.UTF8.GetBytes("test123"));
-
 // var privateKey = File.ReadAllBytes(randomKeyFilePath);
 // var randomKeyDecrypted = rsa.Decrypt(privateKey, RSAEncryptionPadding.Pkcs1);
 // Console.WriteLine($"randomKeyDecrypted:\n\t{Convert.ToBase64String(randomKeyDecrypted)}");
