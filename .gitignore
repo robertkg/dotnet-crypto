@@ -1,4 +1,5 @@
-random_key.enc
+random_key*
+export
 keys/id_*
 *.zip
 
