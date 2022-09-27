@@ -1,4 +1,6 @@
 random_key*
+data/hash.json
+data/sample_*
 export
 keys/id_*
 *.zip
