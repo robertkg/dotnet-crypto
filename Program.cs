@@ -54,6 +54,7 @@ var zip = new ZipFile();
 var timer = new Stopwatch();
 var zipFileName = "export.zip";
 
+zip.Encryption = EncryptionAlgorithm.WinZipAes256;
 zip.UseZip64WhenSaving = Zip64Option.AsNecessary; // >10 GB sample files will cause Ionic.Zip.ZipException
 
 Console.WriteLine($"\nEncrypting {zipFileName} with randomKey");

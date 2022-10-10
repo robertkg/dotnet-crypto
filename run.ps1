@@ -63,7 +63,7 @@ openssl rsautl -inkey keys/id_rsa -decrypt -pkcs -in random_key.enc -out random_
 openssl base64 -in random_key.tmp -out random_key
 Remove-Item random_key.tmp
 $key = Get-Content random_key
-Write-Output "`trandom_key: $key"
+Write-Output "random_key [Base64]:`n`t$key"
 
 $zipFileName = 'export.zip'
 Write-Output "Decrypting $zipFileName with random_key..."
