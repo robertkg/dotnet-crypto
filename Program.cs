@@ -1,4 +1,4 @@
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Diagnostics;
 using Ionic.Zip;
 
@@ -26,7 +26,7 @@ switch (sampleFileType)
         sampleFilePath = "data/sample_50gb";
         break;
     default:
-        Console.WriteLine($"Unknown argument: Expected value in range 1..3, got {sampleFileType}");
+        Console.WriteLine($"Unknown argument: Expected value in range 1..5, got {sampleFileType}");
         throw new IndexOutOfRangeException();
 }
 
