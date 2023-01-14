@@ -43,13 +43,15 @@ switch ($SampleFileType) {
         $sampleFileLength = 53687091200
         $sampleFilePath = "$dataDir\sample_50gb"
     }
-    Default {
+    default {
         Write-Error "Unknown SampleFileType $SampleFileType"
     }
 }
 
 Write-Output 'Creating sample file'
 fsutil file createnew $sampleFilePath $sampleFileLength
+if (!$?) { throw }
+
 Write-Output 'Computing file hash [SHA1]'
 $sampleFileHash = Get-FileHash -Algorithm SHA1 -Path $sampleFilePath | ConvertTo-Json
 Write-Output $sampleFileHash
@@ -57,10 +59,13 @@ $sampleFileHash > "$dataDir\hash.json"
 
 Write-Output "`nRunning dotnet-crypto"
 dotnet run $SampleFileType
+if (!$?) { throw }
 
 Write-Output "`nDecrypting random_key.enc with RSA private key [keys/id_rsa]"
 openssl rsautl -inkey keys/id_rsa -decrypt -pkcs -in random_key.enc -out random_key.tmp -passin pass:test123
+if (!$?) { throw }
 openssl base64 -in random_key.tmp -out random_key
+if (!$?) { throw }
 Remove-Item random_key.tmp
 $key = Get-Content random_key
 Write-Output "random_key [Base64]:`n`t$key"
@@ -70,6 +75,7 @@ Write-Output "Decrypting $zipFileName with random_key..."
 
 $timer = [System.Diagnostics.Stopwatch]::StartNew()
 & 'C:\Program Files\7-Zip\7z.exe' x -y -oexport -p"$key" export.zip 1>$null
+if (!$?) { throw }
 $timer.Stop()
 
 Write-Output "7z decryption completed with exit code $LASTEXITCODE [Decryption time: $($timer.Elapsed.ToString())]"
